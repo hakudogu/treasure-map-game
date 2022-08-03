@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Find the buried treasure!</title>
+<style>
+    body{
+        background-color: #4158D0;
+        background-image: linear-gradient(180deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
+        /* background-repeat: no-repeat; */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        height: 100vh;
+    }
+    h1{
+        font-family: 'bebas neue';
+            }
+    #heading{
+        color: white;
+        text-shadow: 1px 1px 3px black;
+    }
+    p{
+        font-family: 'montserrat';
+        font-size: large;
+    }
+
+</style>
+</head>
+<body>
+
+<h1 id="heading">Find the buried treasure!</h1>
+<img id="map" width=400 height=400 src="http://nostarch.com/images/treasuremap.png"/>
+<h1 id="distance2"></h1>
+<p id="distance"></p>
+<script src="https://code.jquery.com/jquery-2.1.0.js"></script>
+<script>
+// Game code goes here
+function pickRandomSpot(size) {
+return Math.floor(Math.random() * size)
+};
+var clicks= 0;
+var width = 400;
+var height = 400;
+//sets the random spot
+var spot = {
+x: pickRandomSpot(width),
+y: pickRandomSpot(height)
+};
+// function that gets the distance between click event and random spot
+function getDistance (event, spot){
+var diffX = event.offsetX - spot.x;
+var diffY = event.offsetY - spot.y;
+return Math.sqrt((diffY*diffY) + (diffX*diffX)); 
+}
+//functions that determines the hint given to user
+function getGameHint(distance){
+if (distance < 10) {
+return "Boiling Super hot!";
+} else if (distance < 20) {
+return "Really hot";
+} else if (distance < 40) {
+return "Warmer";
+} else if (distance < 80) {
+return "Warm";
+} else if (distance < 160) {
+return "Cold";
+} else if (distance < 320) {
+return "Really cold";
+} else {
+return "Freezing!";
+}
+};
+$("#map").click(function(event){
+clicks++;
+var distance = getDistance(event, spot);
+var clicksLeft = 20-clicks;
+//notes the user of the number of clicks left
+$("#distance").text("Number of clicks left:" +clicksLeft);
+//alerts user the game is over
+if (clicks ==21){alert ("game over!")};
+//stores the hint 
+var gameHint = getGameHint(distance);
+// places the hint to the p element in the html
+$("#distance2").text(gameHint);
+//alerts the user if he wins
+if (distance < 8){ 
+alert ("Found the treasure in " + clicks +" clicks!");
+}
+});
+</script>
+</body>
+</html>
